@@ -21,7 +21,7 @@ const subscribeUser = asyncHandler(async (req, res) => {
     groups: [MAILER_LITE_GROUP_ID],
   };
   try {
-    const response = await axios.post(MAILER_LITE_URL, requestData, {
+    await axios.post(MAILER_LITE_URL, requestData, {
       headers: {
         Authorization: `Bearer ${MAILER_LITE_TOKEN}`,
         "Content-Type": "application/json",
@@ -29,13 +29,12 @@ const subscribeUser = asyncHandler(async (req, res) => {
       },
     });
 
-    console.log("calling mailer lite");
+    console.info("calling mailer lite");
     res.status(200).json({
       success: true,
       message: "User subscribed successfully",
-      data: response.data,
     });
-    console.log("finished calling mailer lite");
+    console.info("response received from mailer lite");
   } catch (error) {
     console.error(error.response?.data || error.message);
     res.status(500);
