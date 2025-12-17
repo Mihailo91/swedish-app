@@ -17,7 +17,7 @@ app.get('/health', (req, res) => {
 });
 
 // Newsletter subscription route
-app.use('/api/subscribe', require('./routes/newsletter'));
+app.use('/api/subscribe', require('./routes/newsletterRoutes'));
 
 app.use (errorHandler);
 
