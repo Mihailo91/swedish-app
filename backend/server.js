@@ -15,7 +15,7 @@ app.use(express.json());
 //to accept form data
 app.use(express.urlencoded({ extended: false }));
 
-app.get("/health", (req, res) => {
+app.get("api/health", (req, res) => {
   res.status(200).json({ message: "UP!" });
 });
 
@@ -23,12 +23,20 @@ app.get("/health", (req, res) => {
 app.use("/api/subscribe", require("./routes/newsletterRoutes"));
 
 app.use(errorHandler);
-app.use(
-  cors({
-    origin: "https://swedishmyway.com",
-    methods: ["GET", "POST", "PUT", "DELETE"], // Specify allowed methods
-    allowedHeaders: ["Content-Type", "Authorization"], // Specify allowed headers
-  })
-);
+
+app.use('/api', (req, res, next) => {
+  res.set('X-Robots-Tag', 'noindex');
+  next();
+});
+
+if (process.env.NODE_ENV === "production") {
+  app.use(
+    cors({
+      origin: "https://swedishmyway.com",
+      methods: ["GET", "POST", "PUT", "DELETE"], // Specify allowed methods
+      allowedHeaders: ["Content-Type", "Authorization"], // Specify allowed headers
+    })
+  );
+}
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
