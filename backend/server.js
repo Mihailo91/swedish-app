@@ -25,18 +25,9 @@ app.use("/api/subscribe", require("./routes/newsletterRoutes"));
 
 app.use(errorHandler);
 
-if (process.env.NODE_ENV === "production") {
-  // set build folder as static
-  app.use(express.static(path.join(__dirname, "../public")));
-
-  app.use((req, res) => {
-    res.sendFile(path.join(__dirname, "../", "public", "index.html"));
-  });
-} else {
-  app.get("/", (req, res) => {
-    res.status(200).json({ message: "Welcome to the Swedish my way app" });
-  });
-}
+app.get("/", (req, res) => {
+  res.status(200).json({ message: "Welcome to the Swedish my way app" });
+});
 
 const corsOptions = {
   origin:
@@ -45,6 +36,7 @@ const corsOptions = {
       : "http://localhost:5000",
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true,
 };
 
 app.use(cors(corsOptions));
